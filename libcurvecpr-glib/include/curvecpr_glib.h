@@ -3,5 +3,7 @@
 
 #include <curvecpr_glib/client_messager_glib.h>
 #include <curvecpr_glib/messager_glib.h>
+#include <curvecpr_glib/server_glib.h>
+#include <curvecpr_glib/server_messager_glib.h>
 
 #endif

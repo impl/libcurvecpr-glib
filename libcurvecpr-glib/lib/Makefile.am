@@ -5,4 +5,6 @@ libcurvecpr_glib_la_CFLAGS = @GLIB_CFLAGS@
 libcurvecpr_glib_la_LDFLAGS = -version-info $(CURVECPR_LIBRARY_VERSION) @GLIB_LIBS@ -L$(top_srcdir)/libcurvecpr/lib -lcurvecpr
 libcurvecpr_glib_la_SOURCES = \
     client_messager_glib.c \
-    messager_glib.c
+    messager_glib.c \
+    server_glib.c \
+    server_messager_glib.c

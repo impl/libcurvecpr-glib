@@ -54,8 +54,6 @@ static int _sendq_head (struct curvecpr_messager *messager, struct curvecpr_bloc
     if (mg->pending_used || mg->pending_eof) {
         curvecpr_bytes_zero(&mg->sendq_head, sizeof(struct curvecpr_block));
 
-        mg->sendq_head.eof = mg->pending_eof ? CURVECPR_BLOCK_EOF_SUCCESS : CURVECPR_BLOCK_STREAM;
-
         if (mg->pending) {
             int requested = mg->pending_used > mg->messager.my_maximum_send_bytes ? mg->messager.my_maximum_send_bytes : mg->pending_used;
 
@@ -77,6 +75,8 @@ static int _sendq_head (struct curvecpr_messager *messager, struct curvecpr_bloc
 
             mg->pending_used -= requested;
         }
+
+        mg->sendq_head.eof = mg->pending_used == 0 && mg->pending_eof ? CURVECPR_BLOCK_EOF_SUCCESS : CURVECPR_BLOCK_STREAM;
 
         mg->sendq_head_exists = 1;
     }
@@ -197,13 +197,11 @@ static gint _gs_compare_range (gconstpointer a, gconstpointer b, gpointer unused
     }
 }
 
-static unsigned char _recvmarkq_is_full (struct curvecpr_messager *messager)
+static unsigned char _recvmarkq_is_empty (struct curvecpr_messager *messager)
 {
     struct curvecpr_messager_glib *mg = messager->cf.priv;
 
-    gint len = g_sequence_get_length(mg->recvmarkq);
-
-    return len >= 0 && (guint)len >= mg->cf.recvmarkq_maximum;
+    return g_sequence_get_length(mg->recvmarkq) == 0;
 }
 
 static int _recvmarkq_put (struct curvecpr_messager *messager, const struct curvecpr_block *block, struct curvecpr_block **block_stored)
@@ -212,7 +210,9 @@ static int _recvmarkq_put (struct curvecpr_messager *messager, const struct curv
 
     struct _recvmarkq_element *new_element;
 
-    if (_recvmarkq_is_full(messager))
+    gint recvmarkq_len = g_sequence_get_length(mg->recvmarkq);
+
+    if (recvmarkq_len >= 0 && (guint)recvmarkq_len >= mg->cf.recvmarkq_maximum)
         return -1;
 
     new_element = g_slice_new(struct _recvmarkq_element);
@@ -339,7 +339,7 @@ void curvecpr_messager_glib_new (struct curvecpr_messager_glib *mg, struct curve
 
             .recvmarkq_put = _recvmarkq_put,
             .recvmarkq_get_nth_unacknowledged = _recvmarkq_get_nth_unacknowledged,
-            .recvmarkq_is_full = _recvmarkq_is_full,
+            .recvmarkq_is_empty = _recvmarkq_is_empty,
             .recvmarkq_remove_range = _recvmarkq_remove_range,
 
             .send = _send
