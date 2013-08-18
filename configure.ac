@@ -34,7 +34,7 @@ AC_ARG_WITH([libglib],
     [], [with_libglib=check]
 )
 AS_CASE(["$with_glib"],
-    [yes], [PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0], [HAVE_LIBGLIB=1])],
+    [yes], [PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0], [HAVE_LIBGLIB=1], [AC_MSG_ERROR([missing libglib])])],
     [no], [],
     [PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0], [HAVE_LIBGLIB=1], [HAVE_LIBGLIB=0])]
 )
