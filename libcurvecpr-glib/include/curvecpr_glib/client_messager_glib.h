@@ -3,8 +3,7 @@
 
 #include "messager_glib.h"
 
-#include <curvecpr/block.h>
-#include <curvecpr/client.h>
+#include <curvecpr.h>
 
 #include <string.h>
 

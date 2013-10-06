@@ -4,10 +4,10 @@ exec_prefix=@exec_prefix@
 includedir=@includedir@
 libdir=@libdir@
 
-Name: @PACKAGE_NAME@-glib
+Name: @PACKAGE_NAME@
 Description: libcurvecpr, a portable implementation of CurveCP
 Version: @PACKAGE_VERSION@
-URL: https://github.com/impl/libcurvecpr
+URL: https://github.com/impl/libcurvecpr-glib
 Requires: libcurvecpr = @PACKAGE_VERSION@
 Requires.private: glib-2.0 >= 2.14.0
 Libs: -L${libdir} -lcurvecpr-glib

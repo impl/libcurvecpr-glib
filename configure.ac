@@ -1,14 +1,14 @@
 AC_PREREQ(2.67)
-AC_INIT(libcurvecpr, 0.1.0, nfontes+libcurvecpr@cynigram.com, libcurvecpr)
+AC_INIT(libcurvecpr-glib, 0.1.0, nfontes+libcurvecpr@cynigram.com, libcurvecpr-glib)
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
-AC_CONFIG_SRCDIR([libcurvecpr/include/curvecpr.h])
+AC_CONFIG_SRCDIR([libcurvecpr-glib/include/curvecpr_glib.h])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 # Library version.
-CURVECPR_LIBRARY_VERSION=1:0:0
-AC_SUBST(CURVECPR_LIBRARY_VERSION)
+CURVECPR_GLIB_LIBRARY_VERSION=1:0:0
+AC_SUBST(CURVECPR_GLIB_LIBRARY_VERSION)
 
 # Checks for programs.
 AM_PROG_AR
@@ -26,23 +26,13 @@ PKG_PROG_PKG_CONFIG
 
 # Checks for libraries.
 PKG_CHECK_MODULES([CHECK], [check >= 0.9.8])
-AC_SEARCH_LIBS([clock_gettime], [rt posix4])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0])
+PKG_CHECK_MODULES([LIBCURVECPR], [libcurvecpr >= 0.1.0])
 AC_CHECK_LIB([sodium], [sodium_init], [], [AC_MSG_ERROR([missing libsodium])])
-
-AC_ARG_WITH([libglib],
-    [AS_HELP_STRING([--with-libglib], [build with glib support @<:@default=check@:>@])],
-    [], [with_libglib=check]
-)
-AS_CASE(["$with_glib"],
-    [yes], [PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0], [HAVE_LIBGLIB=1], [AC_MSG_ERROR([missing libglib])])],
-    [no], [],
-    [PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0], [HAVE_LIBGLIB=1], [HAVE_LIBGLIB=0])]
-)
-AM_CONDITIONAL([USE_LIBGLIB], [test "$with_libglib" != no -a "$HAVE_LIBGLIB" -eq 1])
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([errno.h stdint.h string.h time.h], [], [AC_MSG_ERROR([missing required header file(s)])])
+AC_CHECK_HEADERS([errno.h stdint.h string.h], [], [AC_MSG_ERROR([missing required header file(s)])])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -52,13 +42,6 @@ AC_TYPE_SSIZE_T
 AC_TYPE_UINT8_T
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
-AC_CHECK_TYPE([struct timespec], [], [AC_MSG_ERROR([missing struct timespec])], [[#include <time.h>]])
-
-# Checks for functions.
-AC_CHECK_FUNCS([clock_gettime],
-    [AC_DEFINE([HAVE_CLOCK_GETTIME])],
-    [AC_CHECK_FUNCS([host_get_clock_service], [AC_DEFINE([HAVE_HOST_GET_CLOCK_SERVICE])], [AC_MSG_ERROR([no clock_gettime or host_get_clock_service])])]
-)
 
 # Checks for compiler flags.
 CCHECKFLAGS="-Wno-error"
@@ -80,11 +63,6 @@ AX_APPEND_LINK_FLAGS([-Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack], [], [$CCHECKF
 
 # Done!
 AC_CONFIG_FILES([
-    libcurvecpr/include/Makefile
-    libcurvecpr/lib/Makefile
-    libcurvecpr/test/Makefile
-    libcurvecpr/Makefile
-    libcurvecpr/libcurvecpr.pc
     libcurvecpr-glib/include/Makefile
     libcurvecpr-glib/lib/Makefile
     libcurvecpr-glib/test/Makefile

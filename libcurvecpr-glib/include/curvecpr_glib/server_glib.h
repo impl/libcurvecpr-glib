@@ -1,8 +1,7 @@
 #ifndef __CURVECPR_GLIB_SERVER_GLIB_H
 #define __CURVECPR_GLIB_SERVER_GLIB_H
 
-#include <curvecpr/server.h>
-#include <curvecpr/session.h>
+#include <curvecpr.h>
 
 #include <glib.h>
 

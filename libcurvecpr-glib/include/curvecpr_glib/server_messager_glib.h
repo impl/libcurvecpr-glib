@@ -3,7 +3,7 @@
 
 #include <curvecpr_glib/server_glib.h>
 
-#include <curvecpr/block.h>
+#include <curvecpr.h>
 
 struct curvecpr_server_messager_glib;
 
