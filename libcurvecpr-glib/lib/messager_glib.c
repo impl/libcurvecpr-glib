@@ -79,6 +79,9 @@ static int _sendq_head (struct curvecpr_messager *messager, struct curvecpr_bloc
         mg->sendq_head.eof = mg->pending_used == 0 && mg->pending_eof ? CURVECPR_BLOCK_EOF_SUCCESS : CURVECPR_BLOCK_STREAM;
 
         mg->sendq_head_exists = 1;
+
+        *block_stored = &mg->sendq_head;
+        return 0;
     }
 
     return -1;
