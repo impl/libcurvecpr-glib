@@ -352,12 +352,6 @@ void curvecpr_messager_glib_new (struct curvecpr_messager_glib *mg, struct curve
 
     curvecpr_bytes_zero(mg, sizeof(struct curvecpr_messager_glib));
 
-    if (cf)
-        curvecpr_bytes_copy(&mg->cf, cf, sizeof(struct curvecpr_messager_glib_cf));
-
-    /* Initialize messager. */
-    curvecpr_messager_new(&mg->messager, &messager_cf, client);
-
     /* Set up queues. */
     mg->pending_eof = CURVECPR_BLOCK_STREAM;
     mg->pending = NULL;
@@ -369,6 +363,12 @@ void curvecpr_messager_glib_new (struct curvecpr_messager_glib *mg, struct curve
 
     mg->recvmarkq = g_sequence_new(g_free);
     mg->recvmarkq_distributed = 0;
+
+    if (cf)
+        curvecpr_bytes_copy(&mg->cf, cf, sizeof(struct curvecpr_messager_glib_cf));
+
+    /* Initialize messager. */
+    curvecpr_messager_new(&mg->messager, &messager_cf, client);
 }
 
 void curvecpr_messager_glib_dealloc (struct curvecpr_messager_glib *mg)
