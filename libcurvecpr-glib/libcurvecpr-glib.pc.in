@@ -8,7 +8,7 @@ Name: @PACKAGE_NAME@
 Description: libcurvecpr, a portable implementation of CurveCP
 Version: @PACKAGE_VERSION@
 URL: https://github.com/impl/libcurvecpr-glib
-Requires: libcurvecpr = @PACKAGE_VERSION@
-Requires.private: glib-2.0 >= 2.14.0
+Requires: libcurvecpr >= 0.1.2
+Requires.private: glib-2.0 >= 2.34.0
 Libs: -L${libdir} -lcurvecpr-glib
 Cflags: -I${includedir}

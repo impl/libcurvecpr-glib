@@ -27,8 +27,8 @@ PKG_PROG_PKG_CONFIG
 # Checks for libraries.
 PKG_CHECK_MODULES([CHECK], [check >= 0.9.8])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34.0])
-PKG_CHECK_MODULES([LIBCURVECPR], [libcurvecpr >= 0.1.0])
-AC_CHECK_LIB([sodium], [sodium_init], [], [AC_MSG_ERROR([missing libsodium])])
+PKG_CHECK_MODULES([LIBCURVECPR], [libcurvecpr >= 0.1.2])
+PKG_CHECK_MODULES([LIBSODIUM], [libsodium >= 0.4.3])
 
 # Checks for header files.
 AC_HEADER_STDC
